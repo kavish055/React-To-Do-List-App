@@ -12,49 +12,34 @@ function App() {
     function addTodo(todo: TODO) {
         setTodos([todo, ...todos]);
     }
-
     function updateToDo(todo: TODO) {
         setTodos((prev) => prev.map((t) => (t.id === todo.id ? todo : t)));
     }
-
     function deleteToDo(id: string) {
         setTodos((prev) => prev.filter((t) => t.id !== id));
     }
-
     const filtered = todos.filter((t) => !t.done);
 
     return (
         <div id="app" className="app-container">
             <Header />
             <main className="main-content">
-                <section className="todo-input-section">
-                    <NewToDo addTodo={addTodo} />
-                </section>
-
+                <NewToDo addTodo={addTodo} />
                 {todos.length > 0 && (
-                    <section className="todo-stat-bar">
-                        <p className="todo-remaining">
-                            <span className="todo-count">{filtered.length}</span>
-                            <span className="todo-separator"> / </span>
-                            <span className="todo-total">{todos.length}</span>
-                            <span className="todo-label"> tasks left</span>
-                        </p>
-                        <button
-                            className={`btn-toggle-completed ${hideCompleted ? "active" : ""}`}
-                            onClick={() => setHideCompleted(!hideCompleted)}
-                        >
+                    <div className="todo-stat">
+                        <span>
+                            <strong>{filtered.length}</strong> of <strong>{todos.length}</strong> tasks left
+                        </span>
+                        <button onClick={() => setHideCompleted(!hideCompleted)}>
                             {hideCompleted ? "Show Completed" : "Hide Completed"}
                         </button>
-                    </section>
+                    </div>
                 )}
-
-                <section className="todo-list-section">
-                    <ToDoList
-                        todos={hideCompleted ? filtered : todos}
-                        updateToDo={updateToDo}
-                        deleteToDo={deleteToDo}
-                    />
-                </section>
+                <ToDoList
+                    todos={hideCompleted ? filtered : todos}
+                    updateToDo={updateToDo}
+                    deleteToDo={deleteToDo}
+                />
             </main>
             <Footer />
         </div>

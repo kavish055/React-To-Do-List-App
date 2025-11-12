@@ -1,10 +1,10 @@
 function Footer() {
-  return (
-    <footer>
-      {/* Your footer content here, for example: */}
-      <span>© 2025 My ToDo App</span>
-    </footer>
-  );
+    return (
+        <footer className="footer-bar">
+            <p>
+                &copy; {new Date().getFullYear()} My ToDo App
+            </p>
+        </footer>
+    );
 }
-
 export default Footer;

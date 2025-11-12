@@ -3,7 +3,6 @@ import type { TODO } from "../types/todo";
 
 function NewToDo({ addTodo }: { addTodo: (todo: TODO) => void }) {
     const [task, setTask] = useState("");
-
     function handleSubmit(evt: FormEvent<HTMLFormElement>) {
         evt.preventDefault();
         if (task.trim() === "") return;
@@ -16,8 +15,6 @@ function NewToDo({ addTodo }: { addTodo: (todo: TODO) => void }) {
             updatedAt: null,
             updated: false,
         });
-
-        evt.currentTarget.reset();
         setTask("");
     }
 
@@ -26,7 +23,7 @@ function NewToDo({ addTodo }: { addTodo: (todo: TODO) => void }) {
             <input
                 className="todo-input"
                 type="text"
-                placeholder="Add your next task…"
+                placeholder="Add a new task"
                 value={task}
                 maxLength={70}
                 onChange={(evt) => setTask(evt.target.value)}
@@ -38,5 +35,4 @@ function NewToDo({ addTodo }: { addTodo: (todo: TODO) => void }) {
         </form>
     );
 }
-
 export default NewToDo;
