@@ -11,8 +11,11 @@ function ToDoList({ todos, ...props }: Props) {
     if (todos.length === 0) {
         return (
             <div className="empty-todo-list">
-                <p>No todos yet! 📝</p>
-                <p>Start by adding your first task above.</p>
+                <div className="empty-content">
+                    <span className="empty-icon" aria-label="No todos">📝</span>
+                    <h2 className="empty-title">No todos yet!</h2>
+                    <p className="empty-desc">Start by adding your first task above.</p>
+                </div>
             </div>
         );
     }

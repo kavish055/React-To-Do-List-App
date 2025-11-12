@@ -37,56 +37,11 @@ function ToDoItem({ todo, updateToDo, deleteToDo }: Props) {
     }
 
     return (
-        <li className={`todo-item ${todo.done ? "todo-done" : ""}`}>
-            <div className="todo-header">
-                <p>{`${timePrefix} ${calculateTime(
-                    todo.updatedAt ?? todo.createdAt
-                )}`}</p>
-                <div className="todo-actions">
-                    {editMode ? (
-                        <>
-                            <button
-                                title="Cancel edit"
-                                onClick={() => {
-                                    setEditMode(false);
-                                    setTask(todo.task);
-                                }}
-                            >
-                                <X />
-                            </button>
-                            <button
-                                title="Save changes"
-                                onClick={handleEdit}
-                                disabled={task === todo.task}
-                            >
-                                <Check />
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <button
-                                title="Edit todo"
-                                onClick={() => {
-                                    setEditMode(true);
-                                }}
-                            >
-                                <Pen />
-                            </button>
-                            <button
-                                title="Delete todo"
-                                onClick={() => deleteToDo(todo.id)}
-                            >
-                                <Trash />
-                            </button>
-                        </>
-                    )}
-                </div>
-            </div>
-            <div className="todo-body">
+        <li className={`todo-item${todo.done ? " todo-done" : ""}${editMode ? " editing" : ""}`}>
+            <div className="todo-row">
                 <button
-                    title={
-                        todo.done ? "Mark as incomplete" : "Mark as complete"
-                    }
+                    className="todo-status-btn"
+                    title={todo.done ? "Mark as incomplete" : "Mark as complete"}
                     onClick={() =>
                         updateToDo({
                             ...todo,
@@ -98,21 +53,67 @@ function ToDoItem({ todo, updateToDo, deleteToDo }: Props) {
                 >
                     {todo.done ? <CircleCheck /> : <Circle />}
                 </button>
-                {editMode ? (
-                    <input
-                        type="text"
-                        value={task}
-                        ref={inputRef}
-                        onChange={(evt) => setTask(evt.target.value)}
-                        onKeyDown={(evt) => {
-                            if (evt.key === "Enter") {
-                                handleEdit();
-                            }
-                        }}
-                    />
-                ) : (
-                    <p>{task}</p>
-                )}
+                <div className="todo-content">
+                    {editMode ? (
+                        <input
+                            className="todo-edit-input"
+                            type="text"
+                            value={task}
+                            ref={inputRef}
+                            maxLength={70}
+                            onChange={(evt) => setTask(evt.target.value)}
+                            onKeyDown={(evt) => {
+                                if (evt.key === "Enter") handleEdit();
+                            }}
+                        />
+                    ) : (
+                        <span className="todo-task">{task}</span>
+                    )}
+                </div>
+                <div className="todo-actions">
+                    {editMode ? (
+                        <>
+                            <button
+                                className="todo-action-btn"
+                                title="Cancel edit"
+                                onClick={() => {
+                                    setEditMode(false);
+                                    setTask(todo.task);
+                                }}
+                            >
+                                <X />
+                            </button>
+                            <button
+                                className="todo-action-btn"
+                                title="Save changes"
+                                onClick={handleEdit}
+                                disabled={task === todo.task}
+                            >
+                                <Check />
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button
+                                className="todo-action-btn"
+                                title="Edit todo"
+                                onClick={() => setEditMode(true)}
+                            >
+                                <Pen />
+                            </button>
+                            <button
+                                className="todo-action-btn"
+                                title="Delete todo"
+                                onClick={() => deleteToDo(todo.id)}
+                            >
+                                <Trash />
+                            </button>
+                        </>
+                    )}
+                </div>
+            </div>
+            <div className="todo-meta">
+                <span className="todo-time">{`${timePrefix} ${calculateTime(todo.updatedAt ?? todo.createdAt)}`}</span>
             </div>
         </li>
     );
@@ -126,14 +127,10 @@ function calculateTime(time: number) {
         return timeValue < 2 ? `${timeValue} day ago` : `${timeValue} days ago`;
     } else if (milliseconds > 60 * 60 * 1000) {
         timeValue = Math.floor(milliseconds / (60 * 60 * 1000));
-        return timeValue < 2
-            ? `${timeValue} hour ago`
-            : `${timeValue} hours ago`;
+        return timeValue < 2 ? `${timeValue} hour ago` : `${timeValue} hours ago`;
     } else if (milliseconds > 60 * 1000) {
         timeValue = Math.floor(milliseconds / (60 * 1000));
-        return timeValue < 2
-            ? `${timeValue} minute ago`
-            : `${timeValue} minutes ago`;
+        return timeValue < 2 ? `${timeValue} minute ago` : `${timeValue} minutes ago`;
     } else {
         timeValue = Math.floor(milliseconds / 1000);
         return timeValue < 1

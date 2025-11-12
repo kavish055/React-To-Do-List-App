@@ -17,21 +17,24 @@ function NewToDo({ addTodo }: { addTodo: (todo: TODO) => void }) {
             updated: false,
         });
 
-        // Clear input value
-        const form = evt.target as HTMLFormElement;
-        form.reset();
-        
+        evt.currentTarget.reset();
         setTask("");
     }
 
     return (
-        <form className="new-todo" onSubmit={handleSubmit}>
+        <form className="new-todo-form" onSubmit={handleSubmit} autoComplete="off">
             <input
+                className="todo-input"
                 type="text"
-                placeholder="Drink Water"
+                placeholder="Add your next task…"
+                value={task}
+                maxLength={70}
                 onChange={(evt) => setTask(evt.target.value)}
+                aria-label="New to-do task"
             />
-            <button type="submit">Add</button>
+            <button className="todo-add-btn" type="submit" disabled={task.trim() === ""}>
+                Add
+            </button>
         </form>
     );
 }
